@@ -9,9 +9,9 @@ node_js:
 install:
   - yarn install
 before_script:
-  - npm run compile
+  - yarn compile
 script:
-  - npm run coverage
+  - yarn coverage
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 deploy:
