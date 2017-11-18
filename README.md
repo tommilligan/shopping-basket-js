@@ -94,10 +94,10 @@ basket.toDeepArray();
 Finally, we can find the price of our basket:
 ```node
 basket = new Basket(shop);
-basket.setQuantity("BREAD", 9)
+basket.setQuantity("BREAD", 9);
 let total = basket.total();
 // 8.1
-console.log(`£${total.toFixed(2)}`)
+console.log(`£${total.toFixed(2)}`);
 // £8.10
 ```
 
