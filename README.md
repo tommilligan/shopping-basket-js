@@ -47,7 +47,7 @@ let items: Array<Item> = [
 let shop = new Shop(items);
 ```
 
-We can then create baskets attached to this shop, and use them by their id!
+We can then create baskets attached to this shop, and use items by their id!
 ```node
 let basket = new Basket(shop);
 basket.add("BREAD");
@@ -94,8 +94,10 @@ basket.toDeepArray();
 Finally, we can find the price of our basket:
 ```node
 basket = new Basket(shop);
-basket.setQuantity("BREAD", 10)
-basket.total();
-// 9.0
+basket.setQuantity("BREAD", 9)
+let total = basket.total();
+// 8.1
+console.log(`£${total.toFixed(2)}`)
+// £8.10
 ```
 
