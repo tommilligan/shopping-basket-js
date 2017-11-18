@@ -9,6 +9,7 @@ node_js:
 install:
   - yarn install
 before_script:
+  - yarn flow
   - yarn compile
 script:
   - yarn coverage
