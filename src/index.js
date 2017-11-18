@@ -3,9 +3,9 @@
 class BasketError extends Error {}
 class ShopError extends Error {}
 
-type Id = string;
+export type Id = string;
 
-interface Item {
+export interface Item {
     id: Id;
     price: number;
     title: string;

@@ -3,14 +3,16 @@ import { describe, it, beforeEach } from "mocha";
 import chai from "chai";
 import { Basket, Shop } from "../src/index.js";
 
+import type { Item } from "../src/index.js";
+
 let expect = chai.expect;
 
-let milk = {
+let milk: Item = {
     id: "6318dbff-8e44-48df-97a5-c3430d2c8861",
     price: 1.49,
     title: "Milk (2L)",
 };
-let bread = {
+let bread: Item = {
     id: "667fa050-2249-462b-b3db-f75bc51ec7f3",
     price: 0.90,
     title: "Bread (Wholemeal)",
