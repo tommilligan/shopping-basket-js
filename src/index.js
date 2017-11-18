@@ -1,3 +1,9 @@
 // @flow
 
-module.exports = null;
+class Foo {
+    bar = () => {
+        return "bar";
+    }
+}
+
+module.exports = Foo;

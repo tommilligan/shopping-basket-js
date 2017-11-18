@@ -7,9 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "yarn flow && mocha --compilers js:babel-core/register -R spec",
+    "type": "yarn flow",
+    "test": "mocha --compilers js:babel-core/register -R spec",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register -R spec test/",
-    "compile": "babel src -d lib"
+    "compile": "babel src -d lib",
+    "build": "yarn flow && yarn compile && yarn coverage"
   },
   "repository": {
     "type": "git",

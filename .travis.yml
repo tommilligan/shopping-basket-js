@@ -8,11 +8,8 @@ node_js:
   - "4"
 install:
   - yarn install
-before_script:
-  - yarn flow
-  - yarn compile
 script:
-  - yarn coverage
+  - yarn build
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 deploy:
