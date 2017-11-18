@@ -48,7 +48,7 @@ class Shop {
 
 class Basket {
     shop: Shop;
-    contents: Map<Id, number>
+    contents: Map<Id, number>;
 
     constructor(shop: Shop) {
         this.shop = shop;
@@ -144,7 +144,5 @@ class Basket {
 
 module.exports = {
     Basket,
-    Shop,
-    BasketError,
-    ShopError
+    Shop
 };
