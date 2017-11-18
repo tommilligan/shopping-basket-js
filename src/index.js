@@ -55,6 +55,7 @@ class Basket {
         this.contents = new Map();
     }
 
+    // Item management
     add = (id: Id): void => {
         if (!this.contains(id)) {
             this.contents.set(id, 1);
@@ -63,21 +64,34 @@ class Basket {
         }
     }
 
+    contains = (id: Id): boolean => {
+        return this.contents.has(id);
+    }
+
+    empty = (): void => {
+        this.contents.clear();
+    }
+
+    get = (id: Id): Item => {
+        return this.shop.get(id);
+    }
+
+    remove = (id: Id): void => {
+        if (this.contains(id)) {
+            this.contents.delete(id);
+        } else {
+            throw new BasketError(`Item '${id}' is not in basket`);
+        }
+    }
+
+    // Quantity management
     adjustQuantity = (id: Id, adjustment: number): void => {
         let quantity = this.getQuantity(id);
         this.setQuantity(id, quantity + adjustment);
     }
 
-    contains = (id: Id): boolean => {
-        return this.contents.has(id);
-    }
-
     decrement = (id: Id): void => {
         this.adjustQuantity(id, -1);
-    }
-
-    get = (id: Id): Item => {
-        return this.shop.get(id);
     }
 
     getQuantity = (id: Id): number => {
@@ -93,14 +107,6 @@ class Basket {
         this.adjustQuantity(id, +1);
     }
 
-    remove = (id: Id): void => {
-        if (this.contains(id)) {
-            this.contents.delete(id);
-        } else {
-            throw new BasketError(`Item '${id}' is not in basket`);
-        }
-    }
-
     setQuantity = (id: Id, quantity: number): void => {
         if (quantity > 0) {
             this.contents.set(id, quantity);
@@ -109,12 +115,30 @@ class Basket {
         }
     }
 
+    // Calculate properties
     total = (): number => {
         let accumulator: number = 0.0;
         for (let [id, quantity] of this.contents) {
             accumulator += (quantity * this.shop.get(id).price);
         }
         return accumulator;
+    }
+
+    toShallowArray = (): Array<[string, number]> => {
+        return Array.from(this.contents);
+    }
+
+    toDeepArray = (): Array<[Item, number]> => {
+        return this.toShallowArray().map(([id, quantity]) => {
+            return [this.shop.get(id), quantity];
+        });
+    }
+
+    toString = (): string => {
+        let lines = this.toDeepArray().map(([item, quantity]) => {
+            return `${quantity}x ${item.title}`;
+        });
+        return lines.join("\n");
     }
 }
 

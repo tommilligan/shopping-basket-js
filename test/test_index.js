@@ -129,10 +129,34 @@ describe("index.js", function() {
                     }).to.throw();
                 });
             });
-            it("should calculate total correctly", function() {
-                basket.add(milk.id);
-                basket.add(bread.id);
-                expect(basket.total()).to.equal(2.39);
+            describe("should calculate properties", function() {
+                beforeEach(function() {
+                    basket.empty();
+                    basket.setQuantity(milk.id, 2);
+                    basket.add(bread.id);
+                });
+                it("total", function() {
+                    expect(basket.total()).to.equal(3.88);
+                });
+                it("shallow array representation", function() {
+                    let expected = [
+                        [milk.id, 2],
+                        [bread.id, 1]                        
+                    ];
+                    expect(basket.toShallowArray()).to.deep.equal(expected);
+                });
+                it("deep array representation", function() {
+                    //basket.remove(bread.id);
+                    let expected = [
+                        [milk, 2],
+                        [bread, 1]                        
+                    ];
+                    expect(basket.toDeepArray()).to.deep.equal(expected);
+                });
+                it("string representation", function() {
+                    let expected = "2x Milk (2L)\n1x Bread (Wholemeal)";
+                    expect(basket.toString()).to.equal(expected);
+                });
             });
         });
     });
