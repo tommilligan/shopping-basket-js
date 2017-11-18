@@ -9,8 +9,9 @@
   "scripts": {
     "type": "yarn flow",
     "test": "mocha --compilers js:babel-core/register -R spec",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register -R spec test/",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --require babel-core/register -R spec test/",
     "compile": "babel src -d lib",
+    "build:flow": "flow-copy-source -v src lib",
     "build": "yarn flow && yarn compile && yarn coverage"
   },
   "repository": {
@@ -25,12 +26,14 @@
     "babel-core": "^6.25.0",
     "babel-eslint": "^8.0.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "chai": "^4.1.0",
     "eslint": "^4.11.0",
     "eslint-plugin-mocha": "^4.11.0",
     "flow-bin": "^0.59.0",
+    "flow-copy-source": "^1.2.1",
     "istanbul": "1.0.0-alpha.2",
     "mocha": "^4.0.1",
     "mocha-eslint": "^4.0.0"
