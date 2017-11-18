@@ -102,7 +102,11 @@ class Basket {
     }
 
     setQuantity = (id: Id, quantity: number): void => {
-        this.contents.set(id, quantity);        
+        if (quantity > 0) {
+            this.contents.set(id, quantity);
+        } else {
+            throw new BasketError(`Invalid quantity '${quantity}' for '${id}', is < 1`);
+        }
     }
 
     total = (): number => {

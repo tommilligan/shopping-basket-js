@@ -22,26 +22,26 @@ describe("index.js", function() {
         beforeEach(function() {
             shop = new Shop();
         });
-        it("should store and retrieve item", function() {
-            shop.add(milk);
-            let actual = shop.get(milk.id);
-            expect(actual).to.equal(milk);
-        });
         it("should store an array of items during construction", function() {
             shop = new Shop([milk, bread]);
             let actual = shop.get(bread.id);
             expect(actual).to.equal(bread);
         });
+        it("should store and retrieve item", function() {
+            shop.add(milk);
+            let actual = shop.get(milk.id);
+            expect(actual).to.equal(milk);
+        });
     });
     describe("working shop", function() {
         let shop = new Shop();
         beforeEach(function() {
-            shop = new Shop([milk]);
+            shop = new Shop([milk, bread]);
         });
         it("should not overwrite items by default", function() {
             expect(function() {
                 shop.add(milk);
-            }).to.throw;
+            }).to.throw();
         });
         it("should overwrite items if requested", function() {
             let milkOrganic = {
@@ -54,31 +54,83 @@ describe("index.js", function() {
         it("should throw error for non-existant items", function() {
             expect(function() {
                 shop.get("spam");
-            }).to.throw;
+            }).to.throw();
         });
         describe("basket", function() {
             let basket = new Basket(shop);
             beforeEach(function() {
                 basket = new Basket(shop);
             });
-            it("add item from shop", function() {
-                basket.add(milk.id);
-                let quantity = basket.quantity(milk.id);
-                expect(quantity).to.equal(1);
-            });
-            it("add and remove item from shop", function() {
-                basket.add(milk.id);
-                basket.remove(milk.id);
-                expect(basket.contains(milk.id)).to.be.false;
-            });
-            it("should throw error for remoing non-existant item", function() {
-                expect(function () {
+            describe("items by id", function() {
+                it("add item from shop", function() {
+                    basket.add(milk.id);
+                    let quantity = basket.getQuantity(milk.id);
+                    expect(quantity).to.equal(1);
+                });
+                it("errors on duplicate addition", function() {
+                    basket.add(milk.id);
+                    expect(function () {
+                        basket.add(milk.id);
+                    }).to.throw();
+                });
+                it("add and remove item from shop", function() {
+                    basket.add(milk.id);
                     basket.remove(milk.id);
-                }).to.throw;
+                    expect(basket.contains(milk.id)).to.be.false;
+                });
+                it("should throw error for remoing non-existant item", function() {
+                    expect(function () {
+                        basket.remove(milk.id);
+                    }).to.throw();
+                });
+            });
+            describe("items via shop", function() {
+                it("getting a whole item", function() {
+                    let item = basket.get(milk.id);
+                    expect(item.title).to.equal("Milk (2L)");
+                });
+            });
+            describe("quantities", function() {
+                it("increment if exists", function() {
+                    basket.add(milk.id);
+                    basket.increment(milk.id);
+                    basket.increment(milk.id);
+                    let quantity = basket.getQuantity(milk.id);
+                    expect(quantity).to.equal(3);
+                });
+                it("no increment if not exists", function() {
+                    expect(function() {
+                        basket.increment(milk.id);
+                    }).to.throw();
+                });
+                it("set arbitrary positive quantity", function() {
+                    basket.setQuantity(milk.id, 42);
+                    let quantity = basket.getQuantity(milk.id);
+                    expect(quantity).to.equal(42);
+                });
+                it("cannot set quantity < 1", function() {
+                    expect(function() {
+                        basket.setQuantity(milk.id, 0);
+                    }).to.throw();
+                    expect(function() {
+                        basket.setQuantity(milk.id, -42);
+                    }).to.throw();
+                });
+                it("decrement if greater than 1", function() {
+                    basket.setQuantity(milk.id, 42);
+                    basket.decrement(milk.id);
+                    let quantity = basket.getQuantity(milk.id);
+                    expect(quantity).to.equal(41);
+                });
+                it("not decrement if quantity is 1", function() {
+                    basket.add(milk.id);
+                    expect(function() {
+                        basket.decrement(milk.id);
+                    }).to.throw();
+                });
             });
             it("should calculate total correctly", function() {
                 basket.add(milk.id);
-                shop.add(bread);
                 basket.add(bread.id);
                 expect(basket.total()).to.equal(2.39);
             });
