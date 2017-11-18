@@ -10,8 +10,92 @@ A simple shopping basket in Javascript.
 
 ## Install
 
+This module is not hosted on npm - to try it out, clone the repo and install from the local filesystem
+
 ```bash
-yarn add https://github.com/tommilligan/shopping-basket-js#master
+# Clone and build the library
+git clone https://github.com/tommilligan/shopping-basket-js
+cd shopping-basket-js/
+yarn
+yarn build
+
+# Add it as a dependency to your project
+cd ..
+mkdir my-awesome-project
+cd my-awesome-project/
+yarn add file:../shopping-basket-js/
 ```
 
 ## Usage
+
+The `Shop` contains multiple `Item`s, which can then be added to a `Basket`.
+
+We start by setting up our shop and the items:
+```node
+// @flow
+
+import { Shop, Basket } from "shopping-basket-js";
+
+// If you use flow, types are available
+import type { Item } from "shopping-basket-js";
+
+let items: Array<Item> = [
+    {id: "BREAD", price: 0.90, title: "Bread (Wholemeal)"},
+    {id: "MILK", price: 1.49, title: "Milk (2L)"}
+];
+
+let shop = new Shop(items);
+```
+
+We can then create baskets attached to this shop, and use them by their id!
+```node
+let basket = new Basket(shop);
+basket.add("BREAD");
+```
+
+We can alter quantites or remove items altogether:
+```node
+basket.increment("BREAD");
+basket.setQuantity("MILK", 5);
+
+basket.toString();
+// 2x Bread (Wholemeal)
+// 5x Milk (2L)
+
+basket.remove("BREAD");
+basket.setQuantity("MILK", 3);
+
+basket.toString();
+// 3x Milk (2L)
+```
+
+We can access the basket items `Map` directly:
+```node
+for (let [id, quantity] of basket.contents) {
+    // do stuff with basket contents
+}
+```
+
+or through an array representation:
+```node
+basket.empty();
+basket.add("BREAD");
+
+basket.toShallowArray();
+// [["BREAD", 1]]
+```
+
+There is also a helper for getting the full data structure:
+```
+basket.toDeepArray();
+// [[{id: "BREAD", price: 0.90, title: "Bread (Wholemeal)"}, 1]]
+```
+
+Finally, we can find the price of our basket:
+```node
+basket = new Basket(shop);
+basket.setQuantity("BREAD", 10)
+basket.total();
+// 9.0
+```
+
