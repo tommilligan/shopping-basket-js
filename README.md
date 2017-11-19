@@ -34,10 +34,10 @@ We start by setting up our shop and the items:
 ```node
 // @flow
 
-import { Shop, Basket } from "shopping-basket-js";
+import { Shop, Basket } from "shopping-basket";
 
 // If you use flow, types are available
-import type { Item } from "shopping-basket-js";
+import type { Item } from "shopping-basket";
 
 let items: Array<Item> = [
     {id: "BREAD", price: 0.90, title: "Bread (Wholemeal)"},

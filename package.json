@@ -1,5 +1,5 @@
 {
-  "name": "shopping-basket-js",
+  "name": "shopping-basket",
   "version": "0.0.1",
   "description": "A simple shopping basket",
   "main": "./lib/index.js",
